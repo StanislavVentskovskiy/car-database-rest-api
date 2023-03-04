@@ -3,7 +3,6 @@ package ua.com.foxminded.cardatabase.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import ua.com.foxminded.cardatabase.model.Type;
 import ua.com.foxminded.cardatabase.service.impl.TypeServiceImpl;
@@ -21,7 +20,7 @@ public class TypeRestController {
         this.typeService = typeService;
     }
 
-    @GetMapping("/types")
+    @GetMapping("/types/get")
     public ResponseEntity<List<Type>> getAllTypes() {
         List<Type> types = new ArrayList<>();
         types = typeService.getAllTypes();
@@ -29,7 +28,7 @@ public class TypeRestController {
         return new ResponseEntity<>(types, HttpStatus.OK);
     }
 
-    @GetMapping("/types/{id}")
+    @GetMapping("/types/get/{id}")
     public ResponseEntity<Type> getSingleType(@PathVariable("id") Integer typeId) {
         try {
             Type type = typeService.getType(typeId).get();
@@ -41,7 +40,6 @@ public class TypeRestController {
     }
 
     @PostMapping("/types")
-    @PreAuthorize("hasAuthority('USER')")
     public ResponseEntity<Type> createType(@RequestBody Type type) {
         Type addedType = typeService.addType(type);
 
@@ -49,7 +47,6 @@ public class TypeRestController {
     }
 
     @PutMapping("/types/{id}")
-    @PreAuthorize("hasAuthority('USER')")
     public ResponseEntity<Type> updateType(@PathVariable("id") Integer id, @RequestBody Type type) {
         Optional<Type> typeData = typeService.getType(id);
 

@@ -60,11 +60,12 @@ CREATE TABLE IF NOT EXISTS  cardatabase.cars
 
     TABLESPACE pg_default;
 
-CREATE TABLE IF NOT EXISTS cardatabase.users
+create table if not exists roles
 (
-    id BIGSERIAL NOT NULL,
-    name character varying,
+    id   serial
+        primary key,
+    name varchar(255)
+);
 
-)
-
-    TABLESPACE pg_default;
+alter table roles
+    owner to postgres;

@@ -3,7 +3,6 @@ package ua.com.foxminded.cardatabase.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import ua.com.foxminded.cardatabase.model.Model;
 import ua.com.foxminded.cardatabase.service.impl.ModelServiceImpl;
@@ -17,11 +16,11 @@ public class ModelRestController {
     private final ModelServiceImpl modelService;
 
     @Autowired
-    private ModelRestController(ModelServiceImpl modelService) {
+    public ModelRestController(ModelServiceImpl modelService) {
         this.modelService = modelService;
     }
 
-    @GetMapping("/models/")
+    @GetMapping("/models/get/")
     public ResponseEntity<List<Model>> getAllModels() {
         List<Model> models = new ArrayList<>();
         models = modelService.getAllModels();
@@ -29,7 +28,7 @@ public class ModelRestController {
         return new ResponseEntity<>(models, HttpStatus.OK);
     }
 
-    @GetMapping("/models/{id}")
+    @GetMapping("/models/get/{id}")
     public ResponseEntity<Model> getSingleModel(@PathVariable("id") Integer modelId) {
         try {
             Model model = modelService.getModel(modelId).get();
@@ -41,7 +40,6 @@ public class ModelRestController {
     }
 
     @PostMapping("/models")
-    @PreAuthorize("hasAuthority('USER')")
     public ResponseEntity<Model> createModel(@RequestBody Model model) {
         Model addedModel = modelService.addModel(model);
 
@@ -49,7 +47,6 @@ public class ModelRestController {
     }
 
     @PutMapping("/models/{id}")
-    @PreAuthorize("hasAuthority('USER')")
     public ResponseEntity<Model> updateModel(@PathVariable("id") Integer id, @RequestBody Model model) {
         Optional<Model> modelData = modelService.getModel(id);
 
@@ -64,7 +61,6 @@ public class ModelRestController {
     }
 
     @DeleteMapping("/models/{id}")
-    @PreAuthorize("hasAuthority('USER')")
     public ResponseEntity<HttpStatus> deleteModel(@PathVariable("id") Integer id) {
         try {
             modelService.deleteModel(id);

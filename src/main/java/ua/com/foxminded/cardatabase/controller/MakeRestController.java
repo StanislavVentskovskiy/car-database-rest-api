@@ -3,7 +3,6 @@ package ua.com.foxminded.cardatabase.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import ua.com.foxminded.cardatabase.model.Make;
 import ua.com.foxminded.cardatabase.service.impl.MakeServiceImpl;
@@ -21,7 +20,7 @@ public class MakeRestController {
         this.makeService = makeService;
     }
 
-    @GetMapping("/makes")
+    @GetMapping("/makes/get")
     public ResponseEntity<List<Make>> getAllMakes() {
         List<Make> makes = new ArrayList<>();
         makes = makeService.getAllMakes();
@@ -29,7 +28,7 @@ public class MakeRestController {
         return new ResponseEntity<>(makes, HttpStatus.OK);
     }
 
-    @GetMapping("/makes/{id}")
+    @GetMapping("/makes/get/{id}")
     public ResponseEntity<Make> getSingleMake(@PathVariable("id") Integer makeId) {
         try {
             Make make = makeService.getMake(makeId).get();
@@ -41,7 +40,6 @@ public class MakeRestController {
     }
 
     @PostMapping("/makes")
-    @PreAuthorize("hasAuthority('USER')")
     public ResponseEntity<Make> createMake(@RequestBody Make make) {
         Make addedMake = makeService.addMake(make);
 
@@ -49,7 +47,6 @@ public class MakeRestController {
     }
 
     @PutMapping("/makes/{id}")
-    @PreAuthorize("hasAuthority('USER')")
     public ResponseEntity<Make> updateMake(@PathVariable("id") Integer id, @RequestBody Make make) {
         Optional<Make> makeData = makeService.getMake(id);
 
@@ -64,7 +61,6 @@ public class MakeRestController {
     }
 
     @DeleteMapping("/makes/{id}")
-    @PreAuthorize("hasAuthority('USER')")
     public ResponseEntity<HttpStatus> deleteMake(@PathVariable("id") Integer id) {
         try {
             makeService.deleteMake(id);

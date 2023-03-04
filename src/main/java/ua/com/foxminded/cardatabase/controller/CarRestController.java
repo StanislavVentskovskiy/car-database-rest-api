@@ -3,7 +3,6 @@ package ua.com.foxminded.cardatabase.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import ua.com.foxminded.cardatabase.model.Car;
 import ua.com.foxminded.cardatabase.service.impl.CarServiceImpl;
@@ -21,7 +20,7 @@ public class CarRestController {
         this.carService = carService;
     }
 
-    @GetMapping("/cars")
+    @GetMapping("/cars/get")
     public ResponseEntity<List<Car>> getAllCars() {
         List<Car> cars = new ArrayList<>();
         cars = carService.getAllCars();
@@ -29,7 +28,7 @@ public class CarRestController {
         return new ResponseEntity<>(cars, HttpStatus.OK);
     }
 
-    @GetMapping("/cars/{id}")
+    @GetMapping("/cars/get/{id}")
     public ResponseEntity<Car> getSingleCar(@PathVariable("id") String carId) {
         try {
             Car car = carService.getCar(carId).get();
@@ -41,7 +40,6 @@ public class CarRestController {
     }
 
     @PostMapping("/cars")
-    @PreAuthorize("hasAuthority('USER')")
     public ResponseEntity<Car> createCar(@RequestBody Car car) {
         Car addedCar = carService.addCar(car);
 
@@ -49,7 +47,6 @@ public class CarRestController {
     }
 
     @PutMapping("/cars/{id}")
-    @PreAuthorize("hasAuthority('USER')")
     public ResponseEntity<Car> updateCar(@PathVariable("id") String id, @RequestBody Car car) {
         Optional<Car> carData = carService.getCar(id);
 
@@ -67,7 +64,6 @@ public class CarRestController {
     }
 
     @DeleteMapping("/cars/{id}")
-    @PreAuthorize("hasAuthority('USER')")
     public ResponseEntity<HttpStatus> deleteCar(@PathVariable("id") String id) {
         try {
             carService.deleteCar(id);
@@ -78,7 +74,7 @@ public class CarRestController {
         }
     }
 
-    @GetMapping("/cars/search")
+    @GetMapping("/cars/get/search")
     public ResponseEntity<List<Car>> searchCars(@RequestParam("make") String make, @RequestParam("minYear") Integer minYear) {
         return new ResponseEntity<>(carService.searchCars(make, minYear), HttpStatus.OK);
     }
