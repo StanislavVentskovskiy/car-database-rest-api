@@ -8,10 +8,9 @@ import ua.com.foxminded.cardatabase.model.Make;
 import ua.com.foxminded.cardatabase.service.impl.MakeServiceImpl;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
+import static ua.com.foxminded.cardatabase.url.UrlContainer.*;
 
 @RestController
-@RequestMapping("/api")
 public class MakeRestController {
     private final MakeServiceImpl makeService;
 
@@ -20,7 +19,7 @@ public class MakeRestController {
         this.makeService = makeService;
     }
 
-    @GetMapping("/makes/get")
+    @GetMapping(getAllMakes)
     public ResponseEntity<List<Make>> getAllMakes() {
         List<Make> makes = new ArrayList<>();
         makes = makeService.getAllMakes();
@@ -28,7 +27,7 @@ public class MakeRestController {
         return new ResponseEntity<>(makes, HttpStatus.OK);
     }
 
-    @GetMapping("/makes/get/{id}")
+    @GetMapping(getSingleMake + "{id}")
     public ResponseEntity<Make> getSingleMake(@PathVariable("id") Integer makeId) {
         try {
             Make make = makeService.getMake(makeId).get();
@@ -39,28 +38,26 @@ public class MakeRestController {
         }
     }
 
-    @PostMapping("/makes")
+    @PostMapping(postMake)
     public ResponseEntity<Make> createMake(@RequestBody Make make) {
         Make addedMake = makeService.addMake(make);
 
         return new ResponseEntity<>(addedMake, HttpStatus.CREATED);
     }
 
-    @PutMapping("/makes/{id}")
+    @PutMapping(editMake + "{id}")
     public ResponseEntity<Make> updateMake(@PathVariable("id") Integer id, @RequestBody Make make) {
-        Optional<Make> makeData = makeService.getMake(id);
+        if (makeService.getMake(id).isPresent()) {
+            make.setId(id);
 
-        if(makeData.isPresent()){
-            Make updatedMake = makeData.get();
-            updatedMake.setName(make.getName());
-
-            return new ResponseEntity<>(makeService.addMake(updatedMake), HttpStatus.OK);
-        } else {
+            return new ResponseEntity<>(makeService.updateMake(make), HttpStatus.OK);
+        }   else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
 
-    @DeleteMapping("/makes/{id}")
+
+    @DeleteMapping( editMake + "{id}")
     public ResponseEntity<HttpStatus> deleteMake(@PathVariable("id") Integer id) {
         try {
             makeService.deleteMake(id);

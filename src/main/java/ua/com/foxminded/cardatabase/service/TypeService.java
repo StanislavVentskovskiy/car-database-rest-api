@@ -11,7 +11,7 @@ public interface TypeService {
 
     Type addType(Type type);
 
-    Optional<Type> updateType(Type type);
+    Type updateType(Type type);
 
     Optional<Type> getType(int typeId);
 

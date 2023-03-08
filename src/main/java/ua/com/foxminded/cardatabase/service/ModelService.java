@@ -10,7 +10,7 @@ public interface ModelService {
 
     Model addModel(Model model);
 
-    Optional<Model> updateModel(Model model);
+    Model updateModel(Model model);
 
     Optional<Model> getModel(int modelId);
 

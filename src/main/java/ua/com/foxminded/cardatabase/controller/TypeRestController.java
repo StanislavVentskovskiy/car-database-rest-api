@@ -9,9 +9,9 @@ import ua.com.foxminded.cardatabase.service.impl.TypeServiceImpl;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import static ua.com.foxminded.cardatabase.url.UrlContainer.*;
 
 @RestController
-@RequestMapping("/api")
 public class TypeRestController {
     private final TypeServiceImpl typeService;
 
@@ -20,7 +20,7 @@ public class TypeRestController {
         this.typeService = typeService;
     }
 
-    @GetMapping("/types/get")
+    @GetMapping(getAllTypes)
     public ResponseEntity<List<Type>> getAllTypes() {
         List<Type> types = new ArrayList<>();
         types = typeService.getAllTypes();
@@ -28,7 +28,7 @@ public class TypeRestController {
         return new ResponseEntity<>(types, HttpStatus.OK);
     }
 
-    @GetMapping("/types/get/{id}")
+    @GetMapping(getSingleType + "{id}")
     public ResponseEntity<Type> getSingleType(@PathVariable("id") Integer typeId) {
         try {
             Type type = typeService.getType(typeId).get();
@@ -39,22 +39,19 @@ public class TypeRestController {
         }
     }
 
-    @PostMapping("/types")
+    @PostMapping(postType)
     public ResponseEntity<Type> createType(@RequestBody Type type) {
         Type addedType = typeService.addType(type);
 
         return new ResponseEntity<>(addedType, HttpStatus.CREATED);
     }
 
-    @PutMapping("/types/{id}")
+    @PutMapping(editType + "{id}")
     public ResponseEntity<Type> updateType(@PathVariable("id") Integer id, @RequestBody Type type) {
-        Optional<Type> typeData = typeService.getType(id);
+        if (typeService.getType(id).isPresent()) {
+            type.setId(id);
 
-        if (typeData.isPresent()) {
-            Type updatedType = typeData.get();
-            updatedType.setName(type.getName());
-
-            return new ResponseEntity<>(typeService.addType(updatedType), HttpStatus.OK);
+            return new ResponseEntity<>(typeService.updateType(type), HttpStatus.OK);
         } else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }

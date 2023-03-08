@@ -25,8 +25,21 @@ public class CarServiceImpl implements CarService {
         return carDao.addCar(car);
     }
 
-    public Car updateCar(Car car){
-        return carDao.updateCar(car);
+    public Car updateCar(Car car) {
+        Car other = carDao.getCar(car.getId()).get();
+        if (car.getYear() != null) {
+            other.setYear(car.getYear());
+        }
+        if (car.getMake() != null){
+            other.setMake(car.getMake());
+        }
+        if (car.getModel() != null) {
+            other.setModel(car.getModel());
+        }
+        if (car.getType() != null){
+            other.setType(car.getType());
+        }
+        return carDao.updateCar(other);
     }
 
     public Optional<Car> getCar(String carId){

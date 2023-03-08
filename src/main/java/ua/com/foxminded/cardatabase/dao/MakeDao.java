@@ -10,7 +10,7 @@ public interface MakeDao {
 
     Make addMake(Make make);
 
-    Optional<Make> updateMake(Make make);
+    Make updateMake(Make make);
 
     Optional<Make> getMake(int makeId);
 

@@ -8,10 +8,9 @@ import ua.com.foxminded.cardatabase.model.Model;
 import ua.com.foxminded.cardatabase.service.impl.ModelServiceImpl;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
+import static ua.com.foxminded.cardatabase.url.UrlContainer.*;
 
 @RestController
-@RequestMapping("/api")
 public class ModelRestController {
     private final ModelServiceImpl modelService;
 
@@ -20,7 +19,7 @@ public class ModelRestController {
         this.modelService = modelService;
     }
 
-    @GetMapping("/models/get/")
+    @GetMapping(getAllModels)
     public ResponseEntity<List<Model>> getAllModels() {
         List<Model> models = new ArrayList<>();
         models = modelService.getAllModels();
@@ -28,7 +27,7 @@ public class ModelRestController {
         return new ResponseEntity<>(models, HttpStatus.OK);
     }
 
-    @GetMapping("/models/get/{id}")
+    @GetMapping(getSingleModel + "{id}")
     public ResponseEntity<Model> getSingleModel(@PathVariable("id") Integer modelId) {
         try {
             Model model = modelService.getModel(modelId).get();
@@ -39,28 +38,25 @@ public class ModelRestController {
         }
     }
 
-    @PostMapping("/models")
+    @PostMapping(postModel)
     public ResponseEntity<Model> createModel(@RequestBody Model model) {
         Model addedModel = modelService.addModel(model);
 
         return new ResponseEntity<>(addedModel, HttpStatus.CREATED);
     }
 
-    @PutMapping("/models/{id}")
+    @PutMapping(editModel + "{id}")
     public ResponseEntity<Model> updateModel(@PathVariable("id") Integer id, @RequestBody Model model) {
-        Optional<Model> modelData = modelService.getModel(id);
+        if (modelService.getModel(id).isPresent()) {
+            model.setId(id);
 
-        if(modelData.isPresent()) {
-            Model updateModel = modelData.get();
-            updateModel.setName(model.getName());
-
-            return new ResponseEntity<>(modelService.addModel(updateModel), HttpStatus.OK);
+            return new ResponseEntity<>(modelService.addModel(model), HttpStatus.OK);
         } else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
 
-    @DeleteMapping("/models/{id}")
+    @DeleteMapping(editModel +  "{id}")
     public ResponseEntity<HttpStatus> deleteModel(@PathVariable("id") Integer id) {
         try {
             modelService.deleteModel(id);

@@ -25,8 +25,13 @@ public class ModelServiceImpl implements ModelService {
         return modelDao.addModel(model);
     }
 
-    public Optional<Model> updateModel(Model model) {
-        return modelDao.updateModel(model);
+    public Model updateModel(Model model) {
+        Model other = modelDao.getModel(model.getId()).get();
+        if (model.getName() != null) {
+            other.setName(model.getName());
+        }
+
+        return modelDao.updateModel(other);
     }
 
     public Optional<Model> getModel(int modelId) {

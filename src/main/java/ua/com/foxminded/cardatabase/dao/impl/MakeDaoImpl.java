@@ -25,14 +25,8 @@ public class MakeDaoImpl implements MakeDao {
         return makeRepository.save(make);
     }
 
-    public Optional<Make> updateMake(Make make) {
-        Optional<Make> other = makeRepository.findById(make.getId());
-        if (other.isPresent()){
-            other.get().setName(make.getName());
-            makeRepository.save(other.get());
-        }
-
-        return other;
+    public Make updateMake(Make make) {
+        return makeRepository.save(make);
     }
 
     public Optional<Make> getMake(int makeId) {

@@ -25,14 +25,8 @@ public class TypeDaoImpl implements TypeDao {
         return typeRepository.save(type);
     }
 
-    public Optional<Type> updateType(Type type){
-        Optional<Type> other = typeRepository.findById(type.getId());
-        if(other.isPresent()){
-            other.get().setName(type.getName());
-            typeRepository.save(other.get());
-        }
-
-        return other;
+    public Type updateType(Type type){
+        return typeRepository.save(type);
     }
 
     public Optional<Type> getType(int typeId){

@@ -5,7 +5,6 @@ import org.springframework.stereotype.Service;
 import ua.com.foxminded.cardatabase.dao.impl.MakeDaoImpl;
 import ua.com.foxminded.cardatabase.model.Make;
 import ua.com.foxminded.cardatabase.service.MakeService;
-
 import java.util.List;
 import java.util.Optional;
 
@@ -26,7 +25,12 @@ public class MakeServiceImpl implements MakeService {
         return makeDao.addMake(make);
     }
 
-    public Optional<Make> updateMake(Make make){
+    public Make updateMake(Make make){
+        Make other = makeDao.getMake(make.getId()).get();
+        if (make.getName() != null) {
+            other.setName(make.getName());
+        }
+
         return makeDao.updateMake(make);
     }
 

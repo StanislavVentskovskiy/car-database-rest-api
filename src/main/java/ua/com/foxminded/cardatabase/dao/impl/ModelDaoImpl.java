@@ -25,14 +25,8 @@ public class ModelDaoImpl implements ModelDao {
         return modelRepository.save(model);
     }
 
-    public Optional<Model> updateModel(Model model) {
-        Optional<Model> other = modelRepository.findById(model.getId());
-        if (other.isPresent()){
-            other.get().setName(model.getName());
-            modelRepository.save(other.get());
-        }
-
-        return other;
+    public Model updateModel(Model model) {
+        return modelRepository.save(model);
     }
 
     public Optional<Model> getModel(int modelId) {

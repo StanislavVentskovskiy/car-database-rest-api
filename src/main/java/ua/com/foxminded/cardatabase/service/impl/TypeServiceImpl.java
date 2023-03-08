@@ -25,8 +25,13 @@ public class TypeServiceImpl implements TypeService {
         return typeDao.addType(type);
     }
 
-    public Optional<Type> updateType(Type type){
-        return typeDao.updateType(type);
+    public Type updateType(Type type){
+        Type other = typeDao.getType(type.getId()).get();
+        if (type.getName() != null){
+            other.setName(type.getName());
+        }
+
+        return typeDao.updateType(other);
     }
 
     public Optional<Type> getType(int typeId){

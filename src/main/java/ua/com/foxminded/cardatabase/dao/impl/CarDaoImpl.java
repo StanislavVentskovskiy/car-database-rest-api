@@ -26,16 +26,7 @@ public class CarDaoImpl implements CarDao {
     }
 
     public Car updateCar(Car car) {
-        Optional<Car> other = carRepository.findById(car.getId());
-        if (other.isPresent()){
-            other.get().setMake(car.getMake());
-            other.get().setYear(car.getYear());
-            other.get().setId(car.getId());
-            other.get().setModel(car.getModel());
-            carRepository.save(other.get());
-        }
-
-        return other.get();
+        return carRepository.save(car);
     }
 
     public Optional<Car> getCar(String carId) {
