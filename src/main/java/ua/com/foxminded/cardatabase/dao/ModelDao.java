@@ -1,7 +1,6 @@
 package ua.com.foxminded.cardatabase.dao;
 
 import ua.com.foxminded.cardatabase.model.Model;
-
 import java.util.List;
 import java.util.Optional;
 

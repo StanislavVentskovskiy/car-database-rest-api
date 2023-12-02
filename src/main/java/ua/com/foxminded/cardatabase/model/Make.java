@@ -6,8 +6,6 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.slf4j.helpers.CheckReturnValue;
-
 import java.util.Objects;
 
 @Setter

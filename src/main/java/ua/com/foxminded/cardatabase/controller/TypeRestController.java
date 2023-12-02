@@ -8,7 +8,6 @@ import ua.com.foxminded.cardatabase.model.Type;
 import ua.com.foxminded.cardatabase.service.impl.TypeServiceImpl;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import static ua.com.foxminded.cardatabase.url.UrlContainer.*;
 
 @RestController

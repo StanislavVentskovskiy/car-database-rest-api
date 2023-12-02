@@ -18,7 +18,6 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 @Service
 public class DataFileParsing {
@@ -26,7 +25,7 @@ public class DataFileParsing {
     private final MakeServiceImpl makeService;
     private final TypeServiceImpl typeService;
     private final CarServiceImpl carService;
-    private final String filePath = "C:\\workspace\\cardatabase\\src\\main\\resources\\file.csv";
+    private final String filePath = "C:\\workspace\\car-database-rest-api\\src\\main\\resources\\file.csv";
 
     @Autowired
     public DataFileParsing(ModelServiceImpl modelService,

@@ -1,7 +1,6 @@
 package ua.com.foxminded.cardatabase.service;
 
 import ua.com.foxminded.cardatabase.model.Make;
-
 import java.util.List;
 import java.util.Optional;
 
