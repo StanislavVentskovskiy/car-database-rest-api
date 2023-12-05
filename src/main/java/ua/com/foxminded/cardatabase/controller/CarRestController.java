@@ -11,6 +11,7 @@ import java.util.List;
 import static ua.com.foxminded.cardatabase.url.UrlContainer.*;
 
 @RestController
+@CrossOrigin(origins = "*")
 public class CarRestController {
     public final CarServiceImpl carService;
 
