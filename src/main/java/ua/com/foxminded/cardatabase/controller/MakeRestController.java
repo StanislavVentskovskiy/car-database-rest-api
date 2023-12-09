@@ -56,7 +56,6 @@ public class MakeRestController {
         }
     }
 
-
     @DeleteMapping( editMake + "{id}")
     public ResponseEntity<HttpStatus> deleteMake(@PathVariable("id") Integer id) {
         try {
