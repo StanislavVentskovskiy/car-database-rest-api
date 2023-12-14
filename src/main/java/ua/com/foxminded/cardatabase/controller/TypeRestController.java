@@ -1,5 +1,11 @@
 package ua.com.foxminded.cardatabase.controller;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,6 +26,11 @@ public class TypeRestController {
     }
 
     @GetMapping(getAllTypes)
+    @Operation(summary = "Get all types from DB")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "Returned all types if exists",
+            content = { @Content(mediaType = "application/json",
+                schema = @Schema(implementation = Type.class)) }) })
     public ResponseEntity<List<Type>> getAllTypes() {
         List<Type> types = new ArrayList<>();
         types = typeService.getAllTypes();
@@ -28,6 +39,13 @@ public class TypeRestController {
     }
 
     @GetMapping(getSingleType + "{id}")
+    @Operation(summary = "Get single type by id")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "Returned type with given id",
+            content = { @Content(mediaType = "application/json",
+                schema = @Schema(implementation = Type.class)) }),
+        @ApiResponse(responseCode = "404", description = "No type with given id found",
+            content = @Content) })
     public ResponseEntity<Type> getSingleType(@PathVariable("id") Integer typeId) {
         try {
             Type type = typeService.getType(typeId).get();
@@ -39,6 +57,11 @@ public class TypeRestController {
     }
 
     @PostMapping(postType)
+    @Operation(summary = "Create new type", security = @SecurityRequirement(name = "bearerAuth"))
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "201", description = "New type created",
+            content = { @Content(mediaType = "application/json",
+                schema = @Schema(implementation = Type.class)) }) })
     public ResponseEntity<Type> createType(@RequestBody Type type) {
         Type addedType = typeService.addType(type);
 
@@ -46,6 +69,13 @@ public class TypeRestController {
     }
 
     @PutMapping(editType + "{id}")
+    @Operation(summary = "Delete type found by given id", security = @SecurityRequirement(name = "bearerAuth"))
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "204", description = "Type found by id and deleted",
+            content = { @Content(mediaType = "application/json",
+                schema = @Schema(implementation = Type.class)) }),
+        @ApiResponse(responseCode = "500", description = "No type with given id found",
+            content = @Content) })
     public ResponseEntity<Type> updateType(@PathVariable("id") Integer id, @RequestBody Type type) {
         if (typeService.getType(id).isPresent()) {
             type.setId(id);

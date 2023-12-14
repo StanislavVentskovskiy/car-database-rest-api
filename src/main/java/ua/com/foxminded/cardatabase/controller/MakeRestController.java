@@ -1,5 +1,11 @@
 package ua.com.foxminded.cardatabase.controller;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,6 +26,11 @@ public class MakeRestController {
     }
 
     @GetMapping(getAllMakes)
+    @Operation(summary = "Get all makes from DB")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "Returned all cars if exists",
+            content = { @Content(mediaType = "application/json",
+                schema = @Schema(implementation = Make.class)) }) })
     public ResponseEntity<List<Make>> getAllMakes() {
         List<Make> makes = new ArrayList<>();
         makes = makeService.getAllMakes();
@@ -28,6 +39,13 @@ public class MakeRestController {
     }
 
     @GetMapping(getSingleMake + "{id}")
+    @Operation(summary = "Get single make by id")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "Returned make with given id",
+            content = { @Content(mediaType = "application/json",
+                schema = @Schema(implementation = Make.class)) }),
+        @ApiResponse(responseCode = "404", description = "No make with given id found",
+            content = @Content) })
     public ResponseEntity<Make> getSingleMake(@PathVariable("id") Integer makeId) {
         try {
             Make make = makeService.getMake(makeId).get();
@@ -39,6 +57,11 @@ public class MakeRestController {
     }
 
     @PostMapping(postMake)
+    @Operation(summary = "Create new make", security = @SecurityRequirement(name = "bearerAuth"))
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "201", description = "New make created",
+            content = { @Content(mediaType = "application/json",
+                schema = @Schema(implementation = Make.class)) }) })
     public ResponseEntity<Make> createMake(@RequestBody Make make) {
         Make addedMake = makeService.addMake(make);
 
@@ -46,6 +69,13 @@ public class MakeRestController {
     }
 
     @PutMapping(editMake + "{id}")
+    @Operation(summary = "Edit make found by given id", security = @SecurityRequirement(name = "bearerAuth"))
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "Found make with given id and edited",
+            content = { @Content(mediaType = "application/json",
+                schema = @Schema(implementation = Make.class)) }),
+        @ApiResponse(responseCode = "404", description = "No make with given id found",
+            content = @Content) })
     public ResponseEntity<Make> updateMake(@PathVariable("id") Integer id, @RequestBody Make make) {
         if (makeService.getMake(id).isPresent()) {
             make.setId(id);
@@ -57,6 +87,13 @@ public class MakeRestController {
     }
 
     @DeleteMapping( editMake + "{id}")
+    @Operation(summary = "Delete make found by given id", security = @SecurityRequirement(name = "bearerAuth"))
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "204", description = "Make found by id and deleted",
+            content = { @Content(mediaType = "application/json",
+                schema = @Schema(implementation = Make.class)) }),
+        @ApiResponse(responseCode = "500", description = "No make with given id found",
+            content = @Content) })
     public ResponseEntity<HttpStatus> deleteMake(@PathVariable("id") Integer id) {
         try {
             makeService.deleteMake(id);
