@@ -93,11 +93,9 @@ public class CarRestController {
     @DeleteMapping(editCar + "{id}")
     @Operation(summary = "Delete car found by given id", security = @SecurityRequirement(name = "bearerAuth"))
     @ApiResponses(value = {
-        @ApiResponse(responseCode = "204", description = "Car found by id and deleted",
+        @ApiResponse(responseCode = "204", description = "Car found by id and deleted or not exists",
             content = { @Content(mediaType = "application/json",
-                schema = @Schema(implementation = Car.class)) }),
-        @ApiResponse(responseCode = "500", description = "No car with given id found",
-            content = @Content) })
+                schema = @Schema(implementation = Car.class)) }) })
     public ResponseEntity<HttpStatus> deleteCar(@PathVariable("id") String id) {
         try {
             carService.deleteCar(id);
