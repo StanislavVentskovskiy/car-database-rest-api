@@ -89,16 +89,12 @@ public class ModelRestController {
     @DeleteMapping(editModel +  "{id}")
     @Operation(summary = "Delete model found by given id", security = @SecurityRequirement(name = "bearerAuth"))
     @ApiResponses(value = {
-        @ApiResponse(responseCode = "204", description = "Model found by id and deleted, or not exists",
+        @ApiResponse(responseCode = "200", description = "Model found by id and deleted, or not exists",
             content = { @Content(mediaType = "application/json",
                 schema = @Schema(implementation = Model.class)) }) })
     public ResponseEntity<HttpStatus> deleteModel(@PathVariable("id") Integer id) {
-        try {
             modelService.deleteModel(id);
 
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+            return new ResponseEntity<>(HttpStatus.OK);
     }
 }

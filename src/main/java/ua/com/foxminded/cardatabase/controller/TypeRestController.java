@@ -69,9 +69,9 @@ public class TypeRestController {
     }
 
     @PutMapping(editType + "{id}")
-    @Operation(summary = "Delete type found by given id", security = @SecurityRequirement(name = "bearerAuth"))
+    @Operation(summary = "Update type found by given id", security = @SecurityRequirement(name = "bearerAuth"))
     @ApiResponses(value = {
-        @ApiResponse(responseCode = "204", description = "Type found by id and deleted or not exists",
+        @ApiResponse(responseCode = "200", description = "Type updated",
             content = { @Content(mediaType = "application/json",
                 schema = @Schema(implementation = Type.class)) }) })
     public ResponseEntity<Type> updateType(@PathVariable("id") Integer id, @RequestBody Type type) {

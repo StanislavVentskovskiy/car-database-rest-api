@@ -89,16 +89,12 @@ public class MakeRestController {
     @DeleteMapping( editMake + "{id}")
     @Operation(summary = "Delete make found by given id", security = @SecurityRequirement(name = "bearerAuth"))
     @ApiResponses(value = {
-        @ApiResponse(responseCode = "204", description = "Make found by id and deleted or not exists",
+        @ApiResponse(responseCode = "200", description = "Make found by id and deleted or not exists",
             content = { @Content(mediaType = "application/json",
                 schema = @Schema(implementation = Make.class)) }) })
     public ResponseEntity<HttpStatus> deleteMake(@PathVariable("id") Integer id) {
-        try {
             makeService.deleteMake(id);
 
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+            return new ResponseEntity<>(HttpStatus.OK);
     }
 }
